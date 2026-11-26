@@ -1,10 +1,13 @@
-const assert = require("node:assert/strict");
-const { randomUUID } = require("node:crypto");
-const fs = require("node:fs/promises");
-const path = require("node:path");
-const { test } = require("node:test");
-const { compileServerArtifact } = require("../server.js");
-const { loadNativeHost } = require("../native-host.mjs");
+import assert from "node:assert/strict";
+import { randomUUID } from "node:crypto";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+import { loadNativeHost } from "../native-host.mjs";
+import { compileServerArtifact } from "../server.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const NativeProgram = loadNativeHost(process.env.FAST_NATIVE_ADDON);
 
 test("Vite emits relocatable native artifact data with transformed inputs", async t => {

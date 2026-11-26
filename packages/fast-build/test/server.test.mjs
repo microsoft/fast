@@ -1,14 +1,24 @@
-const assert = require("node:assert/strict");
-const fs = require("node:fs");
-const path = require("node:path");
-const { test } = require("node:test");
-const { createHash } = require("node:crypto");
-const { compileServerArtifact } = require("../server.js");
-const wasm = require("../wasm/microsoft_fast_build.js");
-const baseline = require("./server-baseline.json");
-const contextBaseline = require("./server-json-context-baseline.json");
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+import { loadNativeHost } from "../native-host.mjs";
+import { compileServerArtifact } from "../server.js";
+import wasm from "../wasm/microsoft_fast_build.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const baseline = JSON.parse(
+    fs.readFileSync(new URL("./server-baseline.json", import.meta.url), "utf8"),
+);
+const contextBaseline = JSON.parse(
+    fs.readFileSync(
+        new URL("./server-json-context-baseline.json", import.meta.url),
+        "utf8",
+    ),
+);
 const hash = value => createHash("sha256").update(value).digest("hex");
-const { loadNativeHost } = require("../native-host.mjs");
 const NativeProgram = loadNativeHost(process.env.FAST_NATIVE_ADDON);
 function renderFixture(artifact, context, state = {}, options, name, json = false) {
     const program = new NativeProgram(artifact, options);

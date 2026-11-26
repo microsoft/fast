@@ -1,13 +1,15 @@
-const assert = require("node:assert/strict");
-const { execFileSync } = require("node:child_process");
-const fs = require("node:fs");
-const path = require("node:path");
-const { test } = require("node:test");
-const { compileServerArtifact, writeServerArtifact } = require("../server.js");
-const { loadNativeHost } = require("../native-host.mjs");
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+import { loadNativeHost } from "../native-host.mjs";
+import { compileServerArtifact, writeServerArtifact } from "../server.js";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const Program = loadNativeHost(process.env.FAST_NATIVE_ADDON);
-const serverPath = require.resolve("../server.js");
+const serverPath = fileURLToPath(new URL("../server.js", import.meta.url));
 const cliPath = path.resolve(__dirname, "../bin/fast.js");
 const inputs = { entry: "<p>{{title}}</p>", templates: {} };
 

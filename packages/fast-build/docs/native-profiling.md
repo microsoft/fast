@@ -5,6 +5,91 @@ Run commands from the monorepo root. Use a source-built addon matching the sourc
 being investigated; see the [native hosting guide](./native-node-host.md).
 No renderer behavior, artifact format or request API changes are required.
 
+## Measure reusable handle lifecycles
+
+Use `test/performance/native-lifecycle.mjs` for native-only runtime measurements
+of a precompiled artifact with changing request state. This is separate from
+`bench:server` and `profile:server`: their workloads, report-version-3 timings
+and profiling semantics remain unchanged.
+
+Measure build-time preparation separately from execution. Create an authored
+`measurements/entry.html` and a `measurements/templates.json` named-definition
+mapping accepted by `compileServerArtifact` (`{}` for no named definitions):
+
+```sh
+node packages/fast-build/test/performance/prepare-native-lifecycle.mjs \
+  --entry=measurements/entry.html --templates=measurements/templates.json \
+  --artifact=measurements/server.artifact.json \
+  --output=measurements/preparation.json
+```
+
+Its report separates `sourceReadMs`, `sourceDecodeMs` (source decoding and template
+JSON parsing), `compilerImportMs`, `compileMs` and `artifactWriteMs`.
+`compileMs` includes any lazy compiler initialization and artifact Buffer encoding;
+module import alone may not initialize WASM. Preparation invokes the build-time
+compiler but never renders. The runtime runner has no compiler import; do not
+combine preparation with its load/first-use timings.
+
+Provide an artifact, at least two byte-distinct UTF-8 JSON state files and an
+independently checked, exact UTF-8 HTML output file for every request. For example,
+save this as `measurements/manifest.json`:
+
+```json
+{
+    "version": 1,
+    "artifact": "server.artifact.json",
+    "requests": [
+        { "state": "state-a.json", "expected": "a.html" },
+        { "state": "state-b.json", "expected": "b.html" }
+    ]
+}
+```
+
+Paths in the manifest resolve relative to its directory. Optional `renderOptions`
+selects `markersV2`, `attributeNameStrategy`, `dsd`, `maxSteps` and `maxOutputBytes`
+for the whole handle; expected outputs must match that policy. State files are
+passed as original bytes, without JavaScript parsing or reserialization.
+
+Run from the monorepo root:
+
+```sh
+FAST_NATIVE_ADDON="$PWD/crates/microsoft-fast-build/target/node-host/fast-build.node" \
+  node packages/fast-build/test/performance/native-lifecycle.mjs \
+  --manifest=measurements/manifest.json \
+  --samples=3 --iterations=100 --warmup=20 \
+  --output=measurements/lifecycle.json
+```
+
+Unlike npm workspace script paths, these command-line paths are relative to the
+repository root. `--native-addon` can select an explicit addon instead of
+`FAST_NATIVE_ADDON`; omitting both uses installed platform-package resolution.
+Artifact/report writes refuse overwrite: choose new output paths for each run.
+Both tools also print their reports to stdout.
+
+Each sample runs Buffer and complete-string delivery in independent fresh
+subprocesses, each constructing one program handle. First-use
+rendering is measured before sequence validation and warmup. Warm requests cycle
+through the ordered sequence on that same handle; `--iterations` and `--warmup`
+count complete sequence cycles, not individual requests. Each boundary warms
+independently; string delivery includes UTF-8 output decoding on every request.
+Each measured cycle retains its results, then verifies every exact output outside
+the timer. Warm timing includes result-array writes, but excludes assertions and
+state-file I/O.
+
+The version-1 runtime report separates `hostImportMs` (facade import and addon
+loading, not process startup), `artifactReadMs`, `inputReadMs`, `programLoadMs`
+(constructor only), `firstRenderMs`, `warmupMs` and
+`warmTotalMs`/`warmMsPerRequest`. Artifact/state/expected-output/addon hashes and
+handle/request counts identify what was exercised. Warm requests still include
+the native fresh-JSON parsing/validation and complete owned output boundary;
+handle reuse is not request-state caching.
+
+Treat preparation, loading, first use and warm changing-state delivery as
+different costs. This workflow improves lifecycle measurement; it does not
+demonstrate a renderer speedup, HTTP throughput, cold filesystem-cache behavior
+or leak freedom. Keep source/build identity and boundary-matched evidence when
+comparing runs.
+
 ## Capture focused profiles
 
 Build the current compiler and addon:

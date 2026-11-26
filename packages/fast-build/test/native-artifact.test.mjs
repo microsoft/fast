@@ -1,10 +1,13 @@
-const assert = require("node:assert/strict");
-const { execFileSync } = require("node:child_process");
-const fs = require("node:fs");
-const path = require("node:path");
-const { test } = require("node:test");
-const { compileServerArtifact } = require("../server.js");
-const { loadNativeHost } = require("../native-host.mjs");
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+import { loadNativeHost } from "../native-host.mjs";
+import { compileServerArtifact } from "../server.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const NativeProgram = loadNativeHost(process.env.FAST_NATIVE_ADDON);
 
 let executable;
@@ -107,7 +110,15 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
 test("native output preserves frozen UTF-8 workload contracts", async () => {
     const executable = nativeExecutable();
     const { fixture, outputStats } = await import("./performance/fixtures.mjs");
-    const baseline = require("../../../crates/microsoft-fast-build/benches/fixtures/expected-baseline.json");
+    const baseline = JSON.parse(
+        fs.readFileSync(
+            new URL(
+                "../../../crates/microsoft-fast-build/benches/fixtures/expected-baseline.json",
+                import.meta.url,
+            ),
+            "utf8",
+        ),
+    );
     const directory = path.join(__dirname, `.native-frozen-${process.pid}`);
     fs.mkdirSync(directory);
     try {
@@ -163,11 +174,10 @@ test("packaged Rust crates accept compatible native assets after authored-manife
         ],
         { encoding: "utf8", timeout: 180_000, stdio: ["ignore", "pipe", "pipe"] },
     );
-    const packaged = path.join(
-        target,
-        "package",
-        `microsoft-fast-build-${require("../package.json").version}`,
+    const { version } = JSON.parse(
+        fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"),
     );
+    const packaged = path.join(target, "package", `microsoft-fast-build-${version}`);
     assert.ok(fs.existsSync(path.join(packaged, "Cargo.toml.orig")));
     const hostTarget = path.join(packaged, "native-host-target");
     const buildHost = () => {

@@ -13,20 +13,20 @@
 // converter or `CaptureType` itself fails here instead of silently drifting
 // out of sync.
 
-const { after, before, describe, it } = require("node:test");
-const assert = require("node:assert/strict");
-const { execFileSync } = require("node:child_process");
-const fs = require("node:fs");
-const path = require("node:path");
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import { after, before, describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
+import typescript from "typescript";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixturesDir = __dirname;
 const packageDir = path.resolve(fixturesDir, "../../..");
-const repoRoot = path.resolve(packageDir, "../..");
 const fastBin = path.join(packageDir, "bin", "fast.js");
 const supportedTemplate = path.join(fixturesDir, "supported.html");
 const outputDir = path.join(packageDir, "test", ".fixture-output-type-source");
-
-const typescript = require(path.join(repoRoot, "node_modules", "typescript"));
 
 const FIXTURE_ELEMENT_SOURCE = `
 export class FixtureCard {
