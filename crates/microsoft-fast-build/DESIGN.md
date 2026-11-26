@@ -208,6 +208,10 @@ reuse because they can select different data for individual paths. Prefixes that
 exceed the metadata's byte range retain independent resolution.
 Authored composite literals only replace
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
+Loading distinguishes literals that contain quotes from quote-free literals.
+Execution appends quote-free literals directly instead of rescanning them on every
+request. Quote-containing literals retain the existing fallible span sequence;
+no expanded literal copy or additional retained scratch is stored.
 Each span uses the existing output-byte check; escaping adds no execution steps.
 Errors discard the private partial buffer rather than exposing truncated HTML.
 Hydration markers append literal spans and stack-formatted integer fields directly

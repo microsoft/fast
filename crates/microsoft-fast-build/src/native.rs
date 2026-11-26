@@ -1028,6 +1028,8 @@ impl<'a> Executor<'a> {
                 let mut binding = 0;
                 for part in parts {
                     if let plan::Part::Literal(text) = part {
+                        self.push(text)?;
+                    } else if let plan::Part::QuotedLiteral(text) = part {
                         let mut start = 0;
                         for (at, _) in text.match_indices('"') {
                             self.push(&text[start..at])?;

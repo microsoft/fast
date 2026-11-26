@@ -151,6 +151,34 @@ fn cpu_ns() -> Option<u64> {
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    if let Some(case) = case.strip_prefix("composite-literals-") {
+        let (shape, count) = case.rsplit_once('-').ok_or("Unknown workload")?;
+        let count: usize = count.parse()?;
+        let text = match shape {
+            "plain" | "missing" => "prefix/",
+            "quoted" => "prefix \" /",
+            "entities" => "prefix &amp; &quot; /",
+            "unicode" => "prefix é😀 /",
+            "empty" => "",
+            _ => return Err("Unknown workload".into()),
+        };
+        let last = if shape == "missing" {
+            "missing"
+        } else {
+            "label"
+        };
+        let mut locator = Locator::from_templates(Default::default());
+        locator.add_template(
+            "literal-root",
+            &format!(
+                "<f-repeat value=\"{{{{row in rows}}}}\"><i title='{text}{{{{label}}}}{text}{{{{label}}}}{text}{{{{{last}}}}}'></i></f-repeat>"
+            ),
+        );
+        return Ok((
+            compile_server_artifact("<literal-root></literal-root>", &locator)?,
+            json!({"rows":vec![true; count],"label":"item"}).to_string(),
+        ));
+    }
     if let Some(case) = case.strip_prefix("escaped-value-") {
         let parts = case.split('-').collect::<Vec<_>>();
         let [shape, length, count] = parts.as_slice() else {
