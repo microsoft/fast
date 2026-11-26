@@ -31,6 +31,14 @@ All commands are run from the **monorepo root**. Use `-w` to target a specific p
 | Test a single package (Chromium only) | `npm run test:chromium -w @microsoft/fast-element` |
 | Test changed packages only | `npx lage test:node test:chromium --since origin/main` |
 
+#### FAST Build Node tests
+
+Use explicit ES modules named `*.test.mjs` under `packages/fast-build/test/`.
+`npm run test:node -w @microsoft/fast-build` discovers them through a quoted
+recursive glob; do not append individual files to the package script.
+Keep CommonJS-only preload and WASM adapter helpers as `.cjs`, and preserve
+the published entry points' module formats.
+
 #### Interactive / debug workflows
 
 For FAST declarative tests in `@microsoft/fast-element`, these additional scripts are available:

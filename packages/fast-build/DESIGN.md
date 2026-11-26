@@ -371,6 +371,14 @@ source association, resolution, and publication, never a duplicate HTML parser.
 
 ---
 
+## Node test modules
+
+Node tests use explicit ES modules named `*.test.mjs`. The `test:node` script
+passes a quoted recursive glob to Node, so new tests are discovered without
+editing a filename list and shell expansion does not vary across platforms.
+CommonJS preload and WASM adapter helpers retain `.cjs`; published entry points
+keep their existing module formats.
+
 ## Converter fixture validation
 
 Converter fixture inputs live under `test/fixtures/convert/`. Each fixture
@@ -383,7 +391,7 @@ converted `.html` and `.ts` outputs are not checked in. The
 `test:node` includes it so CI validates both `webui-prerelease` and
 `fast-v3-ts` through the real `fast convert` CLI. CLI-level coverage of
 `webui-framework-prerelease` (including its strip-with-warning behavior for
-`f-slotted`/`f-children`) lives in `test/config.test.js` rather than the shared
+`f-slotted`/`f-children`) lives in `test/config.test.mjs` rather than the shared
 fixture, since it exercises a stricter grammar than `supported.html` is written
 against.
 
@@ -397,7 +405,7 @@ generated `.template.ts` output against it with the TypeScript compiler API
 diagnostics, plus a negative case asserting a mismatched directive property name
 does fail to type-check. This test uses its own `test/.fixture-output-type-source/`
 directory, separate from `test/.fixture-output/`, because Node's test runner
-runs test files concurrently and `convert-fixtures.test.js` clears the shared
+runs test files concurrently and `convert-fixtures.test.mjs` clears the shared
 `.fixture-output/` directory between its own tests.
 
 ---

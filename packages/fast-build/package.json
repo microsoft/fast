@@ -63,10 +63,10 @@
     "test:native-host": "node --require ./test/native-addon.cjs --expose-gc --test test/native-host.test.mjs",
     "test:native-package": "node --test test/native-package.test.mjs",
     "build": "node build-wasm.cjs && node build-native-host.mjs ../../crates/microsoft-fast-build/target/node-host",
-    "test:node": "node --require ./test/native-addon.cjs --expose-gc --test test/component-sources.test.js test/config.test.js test/plugin-integrations.test.js test/stylesheet-composition.test.js test/server.test.js test/server-assets.test.js test/native-artifact.test.js test/native-host.test.mjs test/native-loader.test.mjs test/native-package.test.mjs test/server-vite.test.js test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js test/performance/performance.test.mjs test/performance/lifecycle.test.mjs",
+    "test:node": "node --require ./test/native-addon.cjs --expose-gc --test \"test/**/*.test.mjs\"",
     "bench:server": "node test/performance/server-renderer.mjs",
     "profile:server": "node test/performance/server-renderer.mjs --profile-phase=all --profile-directory=./profiles",
-    "test:fixtures:convert": "node --test test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js"
+    "test:fixtures:convert": "node --test \"test/fixtures/convert/*.test.mjs\""
   },
   "engines": {
     "node": ">=22.18.0"

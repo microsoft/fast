@@ -1,13 +1,15 @@
 // @ts-check
 
-const { describe, it, beforeEach, afterEach, after } = require("node:test");
-const assert = require("node:assert/strict");
-const { execFileSync, spawnSync } = require("node:child_process");
-const fs = require("node:fs");
-const path = require("node:path");
+import assert from "node:assert/strict";
+import { execFileSync, spawnSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import { after, afterEach, beforeEach, describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
+import WASM from "./render-server.cjs";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FAST_BIN = path.resolve(__dirname, "../bin/fast.js");
-const WASM = require("./render-server.cjs");
 const CONVERT_WASM_MODULE = path.resolve(
     __dirname,
     "../wasm/convert/microsoft_fast_convert.js",

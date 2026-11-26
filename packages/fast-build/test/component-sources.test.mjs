@@ -1,12 +1,16 @@
-const assert = require("node:assert/strict");
-const { spawnSync } = require("node:child_process");
-const fs = require("node:fs");
-const path = require("node:path");
-const { test } = require("node:test");
-const {
+import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+import ts from "typescript";
+import {
     resolveComponentSources,
     validateComponentSources,
-} = require("../component-sources.js");
+} from "../component-sources.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function fixture(t) {
     const directory = fs.realpathSync(
@@ -224,7 +228,6 @@ test("component conversion generates real typed HTML/CSS modules and ignores unl
     });
     assert.notEqual(refused.status, 0);
     assert.match(refused.stderr, /Use --overwrite/);
-    const ts = require("typescript");
     const consumer = path.join(directory, "consumer.ts");
     fs.writeFileSync(
         consumer,
