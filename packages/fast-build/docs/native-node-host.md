@@ -240,6 +240,12 @@ request separately from warm rendering. Include memory, concurrency and error
 recovery; inner-loop speed alone does not establish an end-to-end win.
 Use the [measurement guide](./server-modules.md#qualification-and-measurements).
 
+Reuse one program for requests with the same artifact and render policy, passing
+fresh JSON state bytes to each call. Reuse does not cache request state or output.
+The repository's [lifecycle measurement workflow](./native-profiling.md#measure-reusable-handle-lifecycles)
+separates preparation, artifact loading, first use and warm changing-state requests
+on one handle. Better measurement coverage does not establish a renderer speedup.
+
 ### Source and worker proof for validation
 
 Rebuild both the addon and `native-host-fixture` example from the same clean
