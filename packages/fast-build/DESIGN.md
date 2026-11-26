@@ -189,6 +189,16 @@ inputs. `--workloads` selects exact workload names without changing their defini
 Reports identify the source checkout, addon hash and per-workload artifact hashes;
 checkout identity alone is not proof of how an external addon was built.
 
+The separate `test/performance/native-lifecycle.mjs` runner accepts precompiled
+artifacts and ordered state/expected-output files without importing the compiler.
+`prepare-native-lifecycle.mjs` measures source reading, compiler loading,
+compilation and artifact writing separately, without rendering.
+Each sample and output boundary gets a fresh process and one program handle;
+first use precedes warm requests that cycle through distinct state bytes.
+Buffer and complete-string delivery warm independently. This lifecycle coverage
+does not redefine report-version-3 benchmark workloads or establish a renderer
+speedup. See the [lifecycle workflow](./docs/native-profiling.md#measure-reusable-handle-lifecycles).
+
 The crate's shadow-output microbenchmark complements these Node measurements with
 fresh-JSON and prepared-state complete-owned-String boundaries. Isolated source
 comparisons alternate execution order and separate allocator diagnostics from
