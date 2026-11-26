@@ -1,10 +1,10 @@
 // @ts-check
-const assert = require("node:assert/strict");
-const { test } = require("node:test");
-const typescript = require("typescript");
-const { chromium } = require("@playwright/test");
-const wasm = require("./render-server.cjs");
-const convert = require("../wasm/convert/microsoft_fast_convert.js");
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { chromium } from "@playwright/test";
+import typescript from "typescript";
+import convert from "../wasm/convert/microsoft_fast_convert.js";
+import wasm from "./render-server.cjs";
 
 const syntaxes = ["webui-prerelease", "webui-framework-prerelease", "fast-v3-ts"];
 

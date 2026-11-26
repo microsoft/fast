@@ -189,6 +189,16 @@ inputs. `--workloads` selects exact workload names without changing their defini
 Reports identify the source checkout, addon hash and per-workload artifact hashes;
 checkout identity alone is not proof of how an external addon was built.
 
+The separate `test/performance/native-lifecycle.mjs` runner accepts precompiled
+artifacts and ordered state/expected-output files without importing the compiler.
+`prepare-native-lifecycle.mjs` measures source reading, compiler loading,
+compilation and artifact writing separately, without rendering.
+Each sample and output boundary gets a fresh process and one program handle;
+first use precedes warm requests that cycle through distinct state bytes.
+Buffer and complete-string delivery warm independently. This lifecycle coverage
+does not redefine report-version-3 benchmark workloads or establish a renderer
+speedup. See the [lifecycle workflow](./docs/native-profiling.md#measure-reusable-handle-lifecycles).
+
 The crate's shadow-output microbenchmark complements these Node measurements with
 fresh-JSON and prepared-state complete-owned-String boundaries. Isolated source
 comparisons alternate execution order and separate allocator diagnostics from
@@ -361,6 +371,14 @@ source association, resolution, and publication, never a duplicate HTML parser.
 
 ---
 
+## Node test modules
+
+Node tests use explicit ES modules named `*.test.mjs`. The `test:node` script
+passes a quoted recursive glob to Node, so new tests are discovered without
+editing a filename list and shell expansion does not vary across platforms.
+CommonJS preload and WASM adapter helpers retain `.cjs`; published entry points
+keep their existing module formats.
+
 ## Converter fixture validation
 
 Converter fixture inputs live under `test/fixtures/convert/`. Each fixture
@@ -373,7 +391,7 @@ converted `.html` and `.ts` outputs are not checked in. The
 `test:node` includes it so CI validates both `webui-prerelease` and
 `fast-v3-ts` through the real `fast convert` CLI. CLI-level coverage of
 `webui-framework-prerelease` (including its strip-with-warning behavior for
-`f-slotted`/`f-children`) lives in `test/config.test.js` rather than the shared
+`f-slotted`/`f-children`) lives in `test/config.test.mjs` rather than the shared
 fixture, since it exercises a stricter grammar than `supported.html` is written
 against.
 
@@ -387,7 +405,7 @@ generated `.template.ts` output against it with the TypeScript compiler API
 diagnostics, plus a negative case asserting a mismatched directive property name
 does fail to type-check. This test uses its own `test/.fixture-output-type-source/`
 directory, separate from `test/.fixture-output/`, because Node's test runner
-runs test files concurrently and `convert-fixtures.test.js` clears the shared
+runs test files concurrently and `convert-fixtures.test.mjs` clears the shared
 `.fixture-output/` directory between its own tests.
 
 ---

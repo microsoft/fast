@@ -1,12 +1,15 @@
 // @ts-check
-const assert = require("node:assert/strict");
-const { test } = require("node:test");
-const wasm = require("./render-server.cjs");
-const convert = require("../wasm/convert/microsoft_fast_convert.js");
-const fs = require("node:fs");
-const path = require("node:path");
-const { execFileSync, spawnSync } = require("node:child_process");
-const typescript = require("typescript");
+import assert from "node:assert/strict";
+import { execFileSync, spawnSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+import typescript from "typescript";
+import convert from "../wasm/convert/microsoft_fast_convert.js";
+import wasm from "./render-server.cjs";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * @param {() => unknown} action

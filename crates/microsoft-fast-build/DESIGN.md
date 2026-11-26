@@ -400,6 +400,11 @@ exercise component plans rather than only byte-identical hosts.
 Its CPU, memory and size measurement boundaries are documented in the package's
 server-modules.md.
 
+The separate Node [lifecycle workflow](../../packages/fast-build/docs/native-profiling.md#measure-reusable-handle-lifecycles)
+measures artifact loading, first use and changing fresh-JSON requests against one
+immutable handle, independently for Buffer and string delivery. It is measurement
+coverage, not a new native API or demonstrated renderer speedup.
+
 The `native-shadow-benchmark` example separately measures complete owned Rust
 results through fresh-JSON and prepared-state boundaries. Its PowerShell runners
 compare isolated source snapshots, alternate execution order and keep allocation

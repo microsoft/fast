@@ -1,11 +1,13 @@
 // @ts-check
 
-const { after, beforeEach, describe, it } = require("node:test");
-const assert = require("node:assert/strict");
-const { execFileSync } = require("node:child_process");
-const fs = require("node:fs");
-const path = require("node:path");
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import { after, beforeEach, describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixturesDir = __dirname;
 const packageDir = path.resolve(fixturesDir, "../../..");
 const fastBin = path.join(packageDir, "bin", "fast.js");
